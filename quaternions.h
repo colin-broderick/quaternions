@@ -19,8 +19,8 @@ namespace cb
 
         public:
             // Constructors
-            Quaternion(double angle, std::array<double, 3> axis);
-            Quaternion(double w, double x, double y, double z);
+            Quaternion(const double angle, const std::array<double, 3>& axis);
+            Quaternion(const double w, const double x, const double y, const double z);
 
             // Static methods
             static double dotProduct(const Quaternion& q1, const Quaternion& q2);
@@ -46,7 +46,7 @@ namespace cb
  * \param angle The angle in radians by which to rotate the frame.
  * \param axis The axis around which to rotate the frame.
  */
-inline cb::Quaternion::Quaternion(double angle, std::array<double, 3> axis)
+inline cb::Quaternion::Quaternion(const double angle, const std::array<double, 3>& axis)
 {
     double axisInvNorm = 1.0/sqrt(axis[0]*axis[0] + axis[1]*axis[1] + axis[2]*axis[2]);
     this->angle = angle;
@@ -64,7 +64,7 @@ inline cb::Quaternion::Quaternion(double angle, std::array<double, 3> axis)
  * \param y The j component of the quaternion.
  * \param z The k component of the quaternion.
  */
-inline cb::Quaternion::Quaternion(double w, double x, double y, double z)
+inline cb::Quaternion::Quaternion(const double w, const double x, const double y, const double z)
 {
     this->w = w;
     this->x = x;
