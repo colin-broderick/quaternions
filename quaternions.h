@@ -113,6 +113,11 @@ inline cb::Quaternion operator-(const cb::Quaternion& q1, const cb::Quaternion& 
     };
 }
 
+inline cb::Quaternion operator-(const cb::Quaternion& quaternion)
+{
+    return -1 * quaternion;
+}
+
 inline cb::Quaternion operator*(const cb::Quaternion& quat1, const cb::Quaternion& quat2)
 {
     double p1 = quat1.getW();
