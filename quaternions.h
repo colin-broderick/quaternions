@@ -48,13 +48,14 @@ namespace cb
  */
 inline cb::Quaternion::Quaternion(double angle, std::array<double, 3> axis)
 {
+    double axisInvNorm = 1.0/sqrt(axis[0]*axis[0] + axis[1]*axis[1] + axis[2]*axis[2]);
     this->angle = angle;
     this->axis = axis;
     this->w = sin(angle/2.0);
-    this->x = cos(angle/2.0) * axis[0];
-    this->y = cos(angle/2.0) * axis[1];
-    this->z = cos(angle/2.0) * axis[2];
-    norm_ = -1;
+    this->x = cos(angle/2.0) * axis[0] * axisInvNorm;
+    this->y = cos(angle/2.0) * axis[1] * axisInvNorm;
+    this->z = cos(angle/2.0) * axis[2] * axisInvNorm;
+    this->norm_ = -1;
 }
 
 /** \brief Construct a quaternion.
