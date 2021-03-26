@@ -23,7 +23,7 @@ namespace cb
             Quaternion(const double w, const double x, const double y, const double z);
 
             // Static methods
-            static double dotProduct(const Quaternion& q1, const Quaternion& q2);
+            static double dotProduct(const Quaternion& quat1, const Quaternion& quat2);
 
             // Getters
             double getW() const;
@@ -80,37 +80,37 @@ inline cb::Quaternion::Quaternion(const double w, const double x, const double y
 // Static methods =================================================================================
 
 /** \brief Compute the inner product of two quaternions.
- * \param q1 The first quaternion.
- * \param q2 The second quaternion.
+ * \param quat1 The first quaternion.
+ * \param quat2 The second quaternion.
  * \return Scalar inner product of the two quaternions.
  */
-inline double cb::Quaternion::dotProduct(const Quaternion& q1, const Quaternion& q2)
+inline double cb::Quaternion::dotProduct(const Quaternion& quat1, const Quaternion& quat2)
 {
-    return q1.getW() * q2.getW()
-         + q1.getX() * q2.getX()
-         + q1.getY() * q2.getY()
-         + q1.getZ() * q2.getZ();
+    return quat1.getW() * quat2.getW()
+         + quat1.getX() * quat2.getX()
+         + quat1.getY() * quat2.getY()
+         + quat1.getZ() * quat2.getZ();
 }
 
 // Operators ======================================================================================
 
-inline cb::Quaternion operator+(const cb::Quaternion& q1, const cb::Quaternion& q2)
+inline cb::Quaternion operator+(const cb::Quaternion& quat1, const cb::Quaternion& quat2)
 {
     return cb::Quaternion{
-        q1.getW() + q2.getW(),
-        q1.getX() + q2.getX(),
-        q1.getY() + q2.getY(),
-        q1.getZ() + q2.getZ()
+        quat1.getW() + quat2.getW(),
+        quat1.getX() + quat2.getX(),
+        quat1.getY() + quat2.getY(),
+        quat1.getZ() + quat2.getZ()
     };
 }
 
-inline cb::Quaternion operator-(const cb::Quaternion& q1, const cb::Quaternion& q2)
+inline cb::Quaternion operator-(const cb::Quaternion& quat1, const cb::Quaternion& quat2)
 {
     return cb::Quaternion{
-        q1.getW() - q2.getW(),
-        q1.getX() - q2.getX(),
-        q1.getY() - q2.getY(),
-        q1.getZ() - q2.getZ()
+        quat1.getW() - quat2.getW(),
+        quat1.getX() - quat2.getX(),
+        quat1.getY() - quat2.getY(),
+        quat1.getZ() - quat2.getZ()
     };
 }
 
@@ -167,7 +167,7 @@ inline cb::Quaternion operator/(const cb::Quaternion& quaternion, const Divisor 
  * \param quat2 The second quaternion.
  * \return Bool indicating equality.
  */
-inline bool operator==(cb::Quaternion quat1, cb::Quaternion quat2)
+inline bool operator==(const cb::Quaternion& quat1, const cb::Quaternion& quat2)
 {
     if (quat1.getW() != quat2.getW())
     {
