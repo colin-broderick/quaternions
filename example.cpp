@@ -2,23 +2,33 @@
 
 int main()
 {
-    cb::Quaternion quat1 = cb::Quaternion{1, 0, 0, 0};                      // The identity quaternion
-    cb::Quaternion quat2 = cb::Quaternion{1, 0.7, 0.4, 1.5}.normalized();   // A random rotation
+    // This is the identity quaternion.
+    cb::Quaternion identity{1, 0, 0, 0};                      
 
-    cb::Quaternion xvector = cb::Quaternion{0, 1, 0, 0};                     // A 3-vector to be rotated
+    // This is some random rotation quaternion.
+    cb::Quaternion someRotation = cb::Quaternion{1, 0.7, 0.4, 1.5}.normalized();
 
-    // Rotate the 3 vector using quat2.
-    auto rotatedVector = quat2 * xvector * quat2.conjugate();
+    // This is a quaternion representation of the x axis unit vector.
+    cb::Quaternion xVector = cb::Quaternion{0, 1, 0, 0};
+
+    // This rotates the x axis vector using someRotation.
+    auto rotatedVector = someRotation * xVector * someRotation.conjugate();
 
     // Print result.
-    std::cout << "The original 3-vector:    " << xvector << std::endl;
-    std::cout << "The rotation quaternion:  " << quat2 << std::endl;
+    std::cout << "The original 3-vector:    " << xVector << std::endl;
+    std::cout << "The rotation quaternion:  " << someRotation << std::endl;
     std::cout << "The rotated 3-vector:     " << rotatedVector << std::endl;
 
-    cb::Quaternion quat3 = cb::Quaternion{35*3.14159/180.0, {0, 1, 0}}.normalized();                      // Rotation around the y axis by 35 degrees.
+    // This creates a rotation from the axis angle form; a 35 degree rotation about the y axis.
+    cb::Quaternion yRotation = cb::Quaternion{35*3.14159/180.0, {0, 1, 0}};
 
-    std::cout << quat3 << std::endl;
-    std::cout << quat3 * xvector * quat3.conjugate() << std::endl;
+    // This demonstrates recovery of the axis angle form from the quaternion.
+    std::cout << "Angle:                   " << yRotation.getAngle() << "\n";
+    auto axis = yRotation.getAxis();
+    std::cout << axis[0] << " " << axis[1] << " " << axis[2] << "\n";
+
+    std::cout << yRotation << std::endl;
+    std::cout << yRotation * xVector * yRotation.conjugate() << std::endl;
 
 
     return 0;
