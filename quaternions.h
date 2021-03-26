@@ -34,7 +34,7 @@ namespace cb
             std::array<double, 3> getAxis() const;
             double norm();
             bool isNormal();
-            Quaternion normalized() const;
+            Quaternion normalized();
             Quaternion conjugate() const;
             Quaternion inverse();
     };
@@ -114,11 +114,6 @@ inline cb::Quaternion operator-(const cb::Quaternion& quat1, const cb::Quaternio
     };
 }
 
-inline cb::Quaternion operator-(const cb::Quaternion& quaternion)
-{
-    return -1 * quaternion;
-}
-
 inline cb::Quaternion operator*(const cb::Quaternion& quat1, const cb::Quaternion& quat2)
 {
     double p1 = quat1.getW();
@@ -148,6 +143,11 @@ inline cb::Quaternion operator*(const Scalar scalar, const cb::Quaternion& quate
         scalar * quaternion.getY(),
         scalar * quaternion.getZ()
     };
+}
+
+inline cb::Quaternion operator-(const cb::Quaternion& quaternion)
+{
+    return -1 * quaternion;
 }
 
 template<typename Scalar>
@@ -241,6 +241,11 @@ inline double cb::Quaternion::norm()
 inline bool cb::Quaternion::isNormal()
 {
     return norm() == 1;
+}
+
+inline cb::Quaternion cb::Quaternion::normalized()
+{
+    return Quaternion{w, x, y, z} / norm();
 }
 
 /** \brief The conjugate is formed by negating all imaginary components. */
