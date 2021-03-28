@@ -13,7 +13,6 @@ namespace cb
     {
         private:
             double w, x, y, z;
-            double norm_;
             double angle;
             std::array<double, 3> axis;
 
@@ -32,11 +31,11 @@ namespace cb
             double getZ() const;
             double getAngle() const;
             std::array<double, 3> getAxis() const;
-            double norm();
-            bool isNormal();
-            Quaternion normalized();
+            double norm() const;
+            bool isNormal() const;
+            Quaternion normalized() const;
             Quaternion conjugate() const;
-            Quaternion inverse();
+            Quaternion inverse() const;
     };
 }
 
@@ -55,7 +54,6 @@ inline cb::Quaternion::Quaternion(const double angle, const std::array<double, 3
     this->x = sin(angle/2.0) * axis[0] * axisInvNorm;
     this->y = sin(angle/2.0) * axis[1] * axisInvNorm;
     this->z = sin(angle/2.0) * axis[2] * axisInvNorm;
-    this->norm_ = -1;
 }
 
 /** \brief Construct a quaternion.
@@ -74,7 +72,6 @@ inline cb::Quaternion::Quaternion(const double w, const double x, const double y
     this->axis[0] = x / sqrt(1 - w*w);
     this->axis[1] = y / sqrt(1 - w*w);
     this->axis[2] = z / sqrt(1 - w*w);
-    norm_ = -1;
 }
 
 // Static methods =================================================================================
@@ -94,6 +91,11 @@ inline double cb::Quaternion::dotProduct(const Quaternion& quat1, const Quaterni
 
 // Operators ======================================================================================
 
+/** \brief Arithmetic sum of two quaternions.
+ * \param quat1 The quaternion from which to subtract.
+ * \param quat2 The quaternion to subtract.
+ * \return The new quaternion after computing the difference.
+ */
 inline cb::Quaternion operator+(const cb::Quaternion& quat1, const cb::Quaternion& quat2)
 {
     return cb::Quaternion{
@@ -104,6 +106,11 @@ inline cb::Quaternion operator+(const cb::Quaternion& quat1, const cb::Quaternio
     };
 }
 
+/** \brief Arithmetic difference of two quaternions.
+ * \param quat1 The first quaternion in the sum.
+ * \param quat2 The second quaternion in the sum.
+ * \return The new quaternion after computing the sum.
+ */
 inline cb::Quaternion operator-(const cb::Quaternion& quat1, const cb::Quaternion& quat2)
 {
     return cb::Quaternion{
@@ -114,6 +121,11 @@ inline cb::Quaternion operator-(const cb::Quaternion& quat1, const cb::Quaternio
     };
 }
 
+/** \brief Multiply two quaternions.
+ * \param quat1 The first quaternion in the product.
+ * \param quat2 The second quaternion in the product.
+ * \return The new quaternion after computing the product.
+ */
 inline cb::Quaternion operator*(const cb::Quaternion& quat1, const cb::Quaternion& quat2)
 {
     double p1 = quat1.getW();
@@ -134,6 +146,11 @@ inline cb::Quaternion operator*(const cb::Quaternion& quat1, const cb::Quaternio
     };
 }
 
+/** \brief Multiply a quaternion by a scalar value.
+ * \param scalar The scalar value by which to multiply.
+ * \param quaternion The quaternion to multiply.
+ * \return The new quaternion after multiplication.
+ */
 template<typename Scalar>
 inline cb::Quaternion operator*(const Scalar scalar, const cb::Quaternion& quaternion)
 {
@@ -145,17 +162,28 @@ inline cb::Quaternion operator*(const Scalar scalar, const cb::Quaternion& quate
     };
 }
 
+/** \brief Negate a quaternion, i.e. multiply by -1. */
 inline cb::Quaternion operator-(const cb::Quaternion& quaternion)
 {
     return -1 * quaternion;
 }
 
+/** \brief Multiply a quaternion by a scalar value.
+ * \param quaternion The quaternion to multiply.
+ * \param scalar The scalar value by which to multiply.
+ * \return The new quaternion after multiplication.
+ */
 template<typename Scalar>
 inline cb::Quaternion operator*(const cb::Quaternion& quaternion, const Scalar scalar)
 {
     return scalar * quaternion;
 }
 
+/** \brief Divide a quaternion by a scalar value, i.e. multiply that that values inverse.
+ * \param quaternion The quaternion to divide.
+ * \param divisor The scalar value by which to divide.
+ * \return The new quaternion after division.
+ */
 template<typename Divisor>
 inline cb::Quaternion operator/(const cb::Quaternion& quaternion, const Divisor divisor)
 {
@@ -188,6 +216,11 @@ inline bool operator==(const cb::Quaternion& quat1, const cb::Quaternion& quat2)
     return true;
 }
 
+/** \brief Quaternion-stream insertion operator, for printing or writing to file.
+ * \param stream The ofstream to write the quaternion to.
+ * \param quaternion A quaternion to print or write to file.
+ * \return A reference to the output stream.
+ */
 inline std::ostream& operator<<(std::ostream& stream, const cb::Quaternion& quaternion)
 {
     stream << "quaternion(" << quaternion.getW() << ", " << quaternion.getX()
@@ -228,22 +261,19 @@ std::array<double, 3> cb::Quaternion::getAxis() const
 }
 
 /** \brief Compute the magnitude of the quaternion. */
-inline double cb::Quaternion::norm()
+inline double cb::Quaternion::norm() const
 {
-    if (norm_ == -1)
-    {
-        norm_ = sqrt(w*w + x*x + y*y + z*z);
-    }
-    return norm_;
+    return sqrt(w*w + x*x + y*y + z*z);
 }
 
 /** \brief Whether the quaternion has unit magnitude. */
-inline bool cb::Quaternion::isNormal()
+inline bool cb::Quaternion::isNormal() const
 {
     return norm() == 1;
 }
 
-inline cb::Quaternion cb::Quaternion::normalized()
+/** \brief Create a new quaternion by normalizing this one. */
+inline cb::Quaternion cb::Quaternion::normalized() const
 {
     return Quaternion{w, x, y, z} / norm();
 }
@@ -255,7 +285,7 @@ inline cb::Quaternion cb::Quaternion::conjugate() const
 }
 
 /** \brief The inverse of a quaternion is its conjugate over the square of its magnitude. */
-inline cb::Quaternion cb::Quaternion::inverse()
+inline cb::Quaternion cb::Quaternion::inverse() const
 {
     double n = norm();
     return conjugate()/(n*n);
