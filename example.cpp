@@ -34,5 +34,7 @@ int main()
     auto axis2 = someRotation.getAxis();
     std::cout << "Axis recovered from the random quaternion:          " << axis2[0] << " " << axis2[1] << " " << axis2[2] << std::endl;
 
+    // The dot product of two quaternions can tell you the angle between them.
+
     return 0;
 }
