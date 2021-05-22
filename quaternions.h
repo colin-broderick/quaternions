@@ -263,7 +263,8 @@ std::array<double, 3> cb::Quaternion::getAxis() const
 /** \brief Compute the magnitude of the quaternion. */
 inline double cb::Quaternion::norm() const
 {
-    return sqrt(w*w + x*x + y*y + z*z);
+    static double n = sqrt(w*w + x*x + y*y + z*z);
+    return n;
 }
 
 /** \brief Whether the quaternion has unit magnitude. */
@@ -275,7 +276,7 @@ inline bool cb::Quaternion::isNormal() const
 /** \brief Create a new quaternion by normalizing this one. */
 inline cb::Quaternion cb::Quaternion::normalized() const
 {
-    return Quaternion{w, x, y, z} / norm();
+    return *this / norm();
 }
 
 /** \brief The conjugate is formed by negating all imaginary components. */
