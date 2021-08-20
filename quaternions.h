@@ -250,12 +250,12 @@ inline double cb::Quaternion::getZ() const
     return z;
 }
 
-double cb::Quaternion::getAngle() const
+inline double cb::Quaternion::getAngle() const
 {
     return angle;
 }
 
-std::array<double, 3> cb::Quaternion::getAxis() const
+inline std::array<double, 3> cb::Quaternion::getAxis() const
 {
     return axis;
 }
